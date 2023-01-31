@@ -42,8 +42,8 @@ app.post('/createCustomer',async(req,res)=>{
 app.post('/createOrders',async(req,res)=>{
   try{
 
-    let find_custId  = await cust.find({customer_id:req.body.customer_id})
-    let invId_find = await inv.find({inventory_id:req.body.inventory_id})
+    let find_custId  = await cust.find({customer_id:req.body.custom_id})
+    let invId_find = await inv.find({inventory_id:req.body.invent_id})
     
     if(find_custId.length===0||invId_find.length===0){
       return res.send("Invalid customer id or inventory id")
@@ -53,14 +53,14 @@ app.post('/createOrders',async(req,res)=>{
     if(invId_find[0].Availability===0) return res.send("ITEM IS OUT OF STOCK")
     else if(invId_find[0].Availability>req.body.Quantity|| invId_find[0].Availability===req.body.Quantity){
     let createCust = await ord.create({
-      custom_id:req.body.customer_id,
-    invent_id:req.body.inventory_id,
+      custom_id:req.body.custom_id,
+    invent_id:req.body.invent_id,
     itemName:req.body.itemName,
     Quantity:req.body.Quantity
     })
     
-    let up = await inv.updateOne({inventory_id:req.body.inventory_id, $set: {Availability:invId_find[0].Availability-req.body.Quantity}})
-    res.send(createCust)
+    let up = await inv.updateOne({inventory_id:req.body.invent_id, $set: {Availability:parseInt(invId_find[0].Availability)-parseInt(req.body.Quantity)}})
+    res.send(up)
     }
     else{
       res.send("Item is out of Stock")
@@ -121,6 +121,7 @@ app.get('/inventory/Furniture',async(req,res)=>{
 app.get('/inventory/InventoryType', async(req,res)=>{
   try{
     const rea = await inv.find({inventoryType:req.body.inventoryType});
+    console.log(rea)
     res.send(rea)
   }catch(e){
     res.status(400).send(e.message)
