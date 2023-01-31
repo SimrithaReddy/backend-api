@@ -53,8 +53,8 @@ app.post('/createOrders',async(req,res)=>{
     if(invId_find[0].Availability===0) return res.send("ITEM IS OUT OF STOCK")
     else if(invId_find[0].Availability>req.body.Quantity|| invId_find[0].Availability===req.body.Quantity){
     let createCust = await ord.create({
-      customer_id:req.body.customer_id,
-    inventory_id:req.body.inventory_id,
+      custom_id:req.body.customer_id,
+    invent_id:req.body.inventory_id,
     itemName:req.body.itemName,
     Quantity:req.body.Quantity
     })
@@ -118,9 +118,25 @@ app.get('/inventory/Furniture',async(req,res)=>{
 
 
 
-app.get('/ItemName/Availabilty', async(req,res)=>{
-
+app.get('/inventory/InventoryType', async(req,res)=>{
+  try{
+    const rea = await inv.find({inventoryType:req.body.inventoryType});
+    res.send(rea)
+  }catch(e){
+    res.status(400).send(e.message)
+  }
 })
+
+app.get('/ItemName/Availabilty', async(req,res)=>{
+  try{
+    const rea = await inv.updateOne({itemName: req.body.itemName, $set:{Availability:req.body.Availability}});
+    let r = await inv.find({itemName:req.body.itemName})
+    res.send(r)
+  }catch(e){
+    res.status(400).send(e.message)
+  }
+})
+
 
 
 

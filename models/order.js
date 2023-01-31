@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-    customer_id:{type:Number, required:true},
-    inventory_id:{type:Number, required:true},
-    itemName:{type:String, required:true},
-    Quantity:{type:Number,required:true}
+    custom_id:{type:Number},
+    invent_id:{type:Number},
+    itemName:{type:String},
+    Quantity:{type:Number}
 })
 
-const order = mongoose.model('customerSchema',orderSchema);
+const order = mongoose.model('ord',orderSchema);
 
 module.exports = order;
