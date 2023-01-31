@@ -80,10 +80,10 @@ app.get('/orders',async(req,res)=>{
   }
 })
 
-app.get('/inventory',async(req,res)=>{
+app.get('/inventory/',async(req,res)=>{
   try{
-    let get_inventory = await inv.find()
-    res.send(get_inventory)
+      let get_inventory = await inv.find()
+    res.send(get_inventory);
   }catch(e){
     res.status(400).send(e.message)
   }
@@ -98,10 +98,19 @@ app.get('/customerDetails',async(req,res)=>{
   }
 })
 
-app.get('/inventory/inventoryType',async(req,res)=>{
+app.get('/inventory/Electronics',async(req,res)=>{
   try{
-    const res = req.params;
-    res.send("Ok")
+    const rea = await inv.find({inventoryType: "Electronics"})
+    res.send(rea)
+  }catch(e){
+    res.status(400).send(e.message)
+  }
+})
+
+app.get('/inventory/Furniture',async(req,res)=>{
+  try{
+    const rea = await inv.find({inventoryType: "Furniture"})
+    res.send(rea)
   }catch(e){
     res.status(400).send(e.message)
   }
@@ -109,6 +118,9 @@ app.get('/inventory/inventoryType',async(req,res)=>{
 
 
 
+app.get('/ItemName/Availabilty', async(req,res)=>{
+
+})
 
 
 
